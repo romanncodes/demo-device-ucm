@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 // Components
 import AllPlace from './screen/AllPlace';
 import AddPlace from './screen/AddPlace';
+import Map from './screen/Map';
 
 
 const Stack = createStackNavigator();
@@ -16,6 +17,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name='AllPlace' component={AllPlace}/>
         <Stack.Screen name='AddPlace' component={AddPlace}/>
+        <Stack.Screen name='Map' component={Map} />
       </Stack.Navigator>
     </NavigationContainer>
   );
