@@ -6,6 +6,7 @@ function LocationPicker(){
 
     const navigator = useNavigation();
     const [locationPermissionInformation, requestPermission]=useForegroundPermissions();
+    
     async function verifyPermission(){
         if(locationPermissionInformation.status===PermissionStatus.UNDETERMINED ){
             const permissionResponse = await requestPermission();
@@ -18,17 +19,6 @@ function LocationPicker(){
         return true;
     }
 
-    async function getLocationHandler(){
-        
-        const hasPermission = await verifyPermission();
-
-        if(!hasPermission){
-            return
-        }
-        const location = await getCurrentPositionAsync();
-        console.log(location)
-    }
-
     async function pickOnMapHandler(){
         const hasPermission = await verifyPermission();
 
@@ -37,13 +27,15 @@ function LocationPicker(){
         }
         const location = await getCurrentPositionAsync();
         console.log(location.coords.latitude)
-        navigator.navigate('Map',{latitude:location.coords.latitude, longitude:location.coords.longitude})
+        navigator.navigate('Map',
+            { 
+                latitude:location.coords.latitude, 
+                longitude:location.coords.longitude
+            })
     }
     return (
         <View>
-            <View style={styles.mapPreview}></View>
             <View style={styles.actions}>
-                <Button title="Locate User" onPress={getLocationHandler} />
                 <Button title="Pick on Map" onPress={pickOnMapHandler}/>
             </View>
         </View>
