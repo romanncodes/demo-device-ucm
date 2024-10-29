@@ -1,27 +1,40 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { View, Text, ScrollView, TextInput ,StyleSheet, Button} from "react-native";
 import ImagePicker from "./ImagePicker";
 import LocationPicker from "./LocationPicker";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSQLiteContext } from "expo-sqlite";
+import { PlaceContext } from "../store";
 
 
-function PlaceForm(){
-    
+function PlaceForm(props){
+
 
     const [title,setTitle] = useState('')
+
+
+    useEffect(()=>{
+        props.updateTitle(title)
+    },[title])
 
 
     function changeTitle(text){
         setTitle(text)
     }
+
+
+   
+
     return (
         <ScrollView style={styles.form}>
             <View>
                 <Text style={styles.label}>Title</Text>
                 <TextInput style={styles.input} onChangeText={changeTitle}/>
             </View>
-            <ImagePicker/>
+            <ImagePicker updateImageUri={props.updateImageUri}/>
             <LocationPicker />
+
+            <Button title="save" onPress={props.saveHandler} />
             
         </ScrollView>
     )

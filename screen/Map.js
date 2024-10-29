@@ -1,12 +1,35 @@
 
-import { useRoute } from "@react-navigation/native";
-import { useState } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useContext, useLayoutEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native"
 import MapView, { Marker } from "react-native-maps";
+import IconButton from "../components/IconButton";
+import { PlaceContext } from "../store";
+
+
 
 function  Map(){
+    const placeCTX = useContext(PlaceContext)
     const route = useRoute()
-    const [selectedLocation, setSelectedLocation] = useState()
+    const navigator = useNavigation();
+    const [selectedLocation, setSelectedLocation] = useState({lat:route.params.latitude, lng:route.params.longitude})
+
+    function savePickerHandler(){
+        placeCTX.modifyLat(selectedLocation?.lat)
+        placeCTX.modifyLng(selectedLocation?.lng)
+        navigator.navigate('AddPlace')
+    }
+
+    useLayoutEffect(()=>{
+        navigator.setOptions({
+            headerRight:()=><IconButton 
+                                name='save' 
+                                color='#000' 
+                                onPress={savePickerHandler}
+                                />
+        })
+    },[navigator])
+
 
     const region={
         latitude:route.params.latitude,

@@ -13,7 +13,7 @@ function LocationPicker(){
             return permissionResponse.granted;
         }
         if(locationPermissionInformation.status===PermissionStatus.DENIED){
-            alert('Necesitas permisos de la camara')
+            alert('Necesitas permisos geolocalizacion')
             return false;
         }
         return true;
@@ -26,13 +26,12 @@ function LocationPicker(){
             return
         }
         const location = await getCurrentPositionAsync();
-        console.log(location.coords.latitude)
+        console.log(location)
+        
         navigator.navigate('Map',
-            { 
-                latitude:location.coords.latitude, 
-                longitude:location.coords.longitude
-            })
+            {latitude:location.coords.latitude, longitude:location.coords.longitude})
     }
+
     return (
         <View>
             <View style={styles.actions}>

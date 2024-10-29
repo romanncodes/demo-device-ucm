@@ -7,19 +7,35 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AllPlace from './screen/AllPlace';
 import AddPlace from './screen/AddPlace';
 import Map from './screen/Map';
+//React
+import { useEffect, useState } from 'react';
+//Database
+import { migrateDbIfNeeded } from './util/database';
+import { SQLiteProvider } from 'expo-sqlite';
+//Context
+import PlaceContextProvider from './store';
+
 
 
 const Stack = createStackNavigator();
 
+
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='AllPlace' component={AllPlace}/>
-        <Stack.Screen name='AddPlace' component={AddPlace}/>
-        <Stack.Screen name='Map' component={Map} />
-      </Stack.Navigator>
-    </NavigationContainer>
+ 
+      <SQLiteProvider databaseName='test' onInit={migrateDbIfNeeded}>
+           <PlaceContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name='AllPlace' component={AllPlace}/>
+            <Stack.Screen name='AddPlace' component={AddPlace}/>
+            <Stack.Screen name='Map' component={Map} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        </PlaceContextProvider>
+      </SQLiteProvider>
+    
   );
 }
 

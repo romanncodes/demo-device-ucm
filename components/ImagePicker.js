@@ -2,14 +2,18 @@
 import { Button, View, Image, Text, StyleSheet } from "react-native";
 
 import { launchCameraAsync, PermissionStatus, useCameraPermissions } from "expo-image-picker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function ImagePicker(){
+
+function ImagePicker(props){
 
     const [pickedImage, setPickedImage]=useState()
 
     const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
 
+    useEffect(()=>{
+        props.updateImageUri(pickedImage)
+    },[pickedImage])
 
     async function verifyPermission(){
         if(cameraPermissionInformation.status===PermissionStatus.UNDETERMINED ){
@@ -35,7 +39,6 @@ function ImagePicker(){
             quality:0.5
         });
         setPickedImage(image.assets[0].uri)
-        console.log(image.assets[0].uri)
     }
     return (
         <View>
